@@ -33,4 +33,4 @@ conan_cmake_run(
 )
 
 # Add targets
-include(App.cmake)
+include(app.cmake)
