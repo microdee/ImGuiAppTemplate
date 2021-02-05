@@ -28,7 +28,7 @@ conan_cmake_run(
         fmt/7.1.3
         entt/3.6.0
         boost/1.75.0
-    BASIC_SETUP
+    BASIC_SETUP CMAKE_TARGETS
     BUILD missing
 )
 
