@@ -2,7 +2,3 @@
 	path = libs/imgui/imgui
 	url = https://github.com/ocornut/imgui.git
 	branch = docking
-[submodule "libs/cml"]
-	path = libs/cml
-	url = https://github.com/demianmnave/CML.git
-	branch = master
