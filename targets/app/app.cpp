@@ -15,8 +15,8 @@ void app::draw_gui()
         | ImGuiWindowFlags_NoNavFocus;
 
     ImGuiViewport* viewport = GetMainViewport();
-    SetNextWindowPos(viewport->GetWorkPos());
-    SetNextWindowSize(viewport->GetWorkSize());
+    SetNextWindowPos(viewport->WorkPos);
+    SetNextWindowSize(viewport->WorkSize);
     SetNextWindowViewport(viewport->ID);
     PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
