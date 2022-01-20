@@ -424,3 +424,8 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 conan.cmake
+conanbuildinfo*
+conan.lock
+conanfile.txt
+conaninfo.txt
+graph_info.json
