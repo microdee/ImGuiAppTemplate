@@ -221,11 +221,8 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
     if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
         return true;
 
-    if(g_app)
-    {
-        if(g_app->wndproc(hWnd, msg, wParam, lParam))
-            return true;
-    }
+    std::optional<LRESULT> result;
+    if (g_app) result = g_app->wndproc({}, hWnd, msg, wParam, lParam);
 
     switch (msg)
     {
@@ -268,5 +265,5 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
         }
         break;
     }
-    return ::DefWindowProc(hWnd, msg, wParam, lParam);
+    return result.has_value() ? result.value() : ::DefWindowProc(hWnd, msg, wParam, lParam);
 }

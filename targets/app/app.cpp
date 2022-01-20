@@ -68,7 +68,7 @@ void app::draw_gui()
     End();
 }
 
-LRESULT app::wndproc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
+std::optional<LRESULT> app::wndproc(std::optional<LRESULT> previous, HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    return 0;
+    return {};
 }
