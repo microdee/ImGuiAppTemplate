@@ -1,4 +1,5 @@
-cmake_minimum_required(VERSION 3.11)
+cmake_minimum_required(VERSION 3.20)
+cmake_policy(SET CMP0079 NEW)
 
 project(MyApplication
     VERSION 0.0.1
@@ -18,10 +19,10 @@ endif()
 # Setting up conan
 include(Config.cmake)
 
-# Add local libraries
+message(STATUS "\nAdd local libraries\n")
 add_subdirectory(libs/imgui)
 
-# Add Conan libraries
+message(STATUS "\nAdd libraries from Conan\n")
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_run(
     REQUIRES
@@ -31,27 +32,29 @@ conan_cmake_run(
     BUILD missing
 )
 
-# Search for targets
+message(STATUS "\nSearching for targets\n")
 file(
     GLOB_RECURSE IMAPP_TARGETS
     LIST_DIRECTORIES false
     CONFIGURE_DEPENDS
-    targets/*target.cmake
+    ${CMAKE_CURRENT_LIST_DIR}/targets/*target.cmake
 )
 
 foreach(IMAPP_TARGET_FILE ${IMAPP_TARGETS})
-    cmake_path(GET ${IMAPP_TARGET_FILE} PARENT_PATH IMAPP_TARGET_DIR)
-    cmake_path(GET ${IMAPP_TARGET_DIR} FILENAME IMAPP_TARGET_NAME)
+    cmake_path(GET IMAPP_TARGET_FILE PARENT_PATH IMAPP_TARGET_DIR)
+    cmake_path(GET IMAPP_TARGET_DIR FILENAME IMAPP_TARGET_NAME)
 
-    message(STATUS "Adding target: ${IMAPP_TARGET_NAME}")
-    
-    file(
-        GLOB_RECURSE IMAPP_TARGET_SRC_FILES
-        FOLLOW_SYMLINKS
-        LIST_DIRECTORIES false
-        CONFIGURE_DEPENDS
-        ${IMAPP_TARGET_DIR}/*.cpp ${IMAPP_TARGET_DIR}/*.h
-    )
+    if(IMAPP_TARGET_DIR)
+        message(STATUS "Found target: ${IMAPP_TARGET_NAME} (${IMAPP_TARGET_DIR})")
+        file(
+            GLOB_RECURSE IMAPP_TARGET_SRC_FILES
+            FOLLOW_SYMLINKS
+            LIST_DIRECTORIES false
+            CONFIGURE_DEPENDS
+            ${IMAPP_TARGET_DIR}/*.cpp ${IMAPP_TARGET_DIR}/*.h
+        )
 
-    include(${IMAPP_TARGET_FILE})
+        include(${IMAPP_TARGET_FILE})
+    endif()
 endforeach()
+message(STATUS "\nTargets added\n")
