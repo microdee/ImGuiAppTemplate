@@ -423,3 +423,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+conan.cmake

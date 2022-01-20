@@ -15,22 +15,43 @@ if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     )
 endif()
 
+# Setting up conan
 include(Config.cmake)
 
 # Add local libraries
 add_subdirectory(libs/imgui)
-add_subdirectory(libs/cml)
 
 # Add Conan libraries
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_run(
     REQUIRES
         fmt/7.1.3
-        entt/3.6.0
-        boost/1.75.0
+        bitserializer/0.44
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
 )
 
-# Add targets
-include(app.cmake)
+# Search for targets
+file(
+    GLOB_RECURSE IMAPP_TARGETS
+    LIST_DIRECTORIES false
+    CONFIGURE_DEPENDS
+    targets/*target.cmake
+)
+
+foreach(IMAPP_TARGET_FILE ${IMAPP_TARGETS})
+    cmake_path(GET ${IMAPP_TARGET_FILE} PARENT_PATH IMAPP_TARGET_DIR)
+    cmake_path(GET ${IMAPP_TARGET_DIR} FILENAME IMAPP_TARGET_NAME)
+
+    message(STATUS "Adding target: ${IMAPP_TARGET_NAME}")
+    
+    file(
+        GLOB_RECURSE IMAPP_TARGET_SRC_FILES
+        FOLLOW_SYMLINKS
+        LIST_DIRECTORIES false
+        CONFIGURE_DEPENDS
+        ${IMAPP_TARGET_DIR}/*.cpp ${IMAPP_TARGET_DIR}/*.h
+    )
+
+    include(${IMAPP_TARGET_FILE})
+endforeach()
