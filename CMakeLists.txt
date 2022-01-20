@@ -9,7 +9,7 @@ project(MyApplication
 if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
     message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
     file(
-        DOWNLOAD "https://github.com/conan-io/cmake-conan/raw/v0.15/conan.cmake"
+        DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/release/0.17/conan.cmake"
         "${CMAKE_BINARY_DIR}/conan.cmake" 
         TLS_VERIFY ON
     )
@@ -25,7 +25,7 @@ add_subdirectory(libs/imgui)
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 conan_cmake_run(
     REQUIRES
-        fmt/7.1.3
+        fmt/8.1.1
         bitserializer/0.44
     BASIC_SETUP CMAKE_TARGETS
     BUILD missing
